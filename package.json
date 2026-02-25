@@ -1,0 +1,30 @@
+{
+  "name": "brimdex-feeds",
+  "version": "1.0.0",
+  "description": "Historical price feed bot using Chainlink and CoinGecko",
+  "main": "index.js",
+  "scripts": {
+    "snapshot": "ts-node src/scripts/snapshotBot.ts",
+    "history": "ts-node src/scripts/readHistory.ts",
+    "query": "ts-node src/scripts/queryFeed.ts",
+    "get-price": "ts-node src/scripts/getPrice.ts",
+    "compile": "hardhat compile",
+    "deploy": "hardhat run scripts/deploy.ts --network somniaTestnet",
+    "set-owner": "hardhat run scripts/setOwner.ts --network somniaTestnet",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "viem": "^2.0.0",
+    "dotenv": "^16.0.0"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "ts-node": "^10.9.0",
+    "hardhat": "^2.19.0"
+  }
+}

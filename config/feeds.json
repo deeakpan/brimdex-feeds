@@ -1,0 +1,50 @@
+{
+  "chainlink": {
+    "base": {
+      "feeds": [
+        {
+          "feedId": "BNB/USD",
+          "pair": "BNB/USD",
+          "address": "0x4b7836916781CAAfbb7Bd1E5FDd20ED544B453b1",
+          "decimals": 8,
+          "deviationThreshold": 0.5,
+          "heartbeat": 86400
+        },
+        {
+          "feedId": "BTC/USD",
+          "pair": "BTC/USD",
+          "address": "0x64c911996D3c6aC71f9b455B1E8E7266BcbD848F",
+          "decimals": 8,
+          "deviationThreshold": 0.1,
+          "heartbeat": 1200
+        },
+        {
+          "feedId": "ETH/USD",
+          "pair": "ETH/USD",
+          "address": "0x71041dddad3595F9CEd3DcCFBe3D1F4b0a16Bb70",
+          "decimals": 8,
+          "deviationThreshold": 0.15,
+          "heartbeat": 1200
+        },
+        {
+          "feedId": "SOL/USD",
+          "pair": "SOL/USD",
+          "address": "0x975043adBb80fc32276CbF9Bbcfd4A601a12462D",
+          "decimals": 8,
+          "deviationThreshold": 0.5,
+          "heartbeat": 86400
+        }
+      ]
+    }
+  },
+  "coingecko": {
+    "feeds": [
+      {
+        "feedId": "SOMI/USD",
+        "pair": "SOMI/USD",
+        "coinId": "somnia",
+        "decimals": 8
+      }
+    ]
+  }
+}
