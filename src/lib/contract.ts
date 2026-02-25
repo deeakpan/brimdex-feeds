@@ -131,15 +131,30 @@ export async function updateFeed(
 ): Promise<string> {
   const contractAddress = getContractAddress()
   
-  const hash = await walletClient.writeContract({
-    address: contractAddress,
-    abi: PRICE_FEED_REGISTRY_ABI,
-    functionName: 'updateFeedByName',
-    args: [feedId, price, roundId, decimals],
-  })
+  try {
+    const hash = await walletClient.writeContract({
+      address: contractAddress,
+      abi: PRICE_FEED_REGISTRY_ABI,
+      functionName: 'updateFeedByName',
+      args: [feedId, price, roundId, decimals],
+    })
 
-  await publicClient.waitForTransactionReceipt({ hash })
-  return hash
+    const receipt = await publicClient.waitForTransactionReceipt({ 
+      hash,
+      timeout: 60000 // 60 second timeout
+    })
+    
+    if (!receipt || receipt.status === 'reverted') {
+      throw new Error(`Transaction reverted: ${hash}`)
+    }
+    
+    return hash
+  } catch (error: any) {
+    if (error.message?.includes('data')) {
+      throw new Error(`Transaction failed: ${error.message}`)
+    }
+    throw error
+  }
 }
 
 /**
