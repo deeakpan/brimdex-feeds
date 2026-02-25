@@ -2,8 +2,9 @@
   "name": "brimdex-feeds",
   "version": "1.0.0",
   "description": "Historical price feed bot using Chainlink and CoinGecko",
-  "main": "index.js",
+  "main": "src/scripts/snapshotBot.ts",
   "scripts": {
+    "start": "ts-node src/scripts/snapshotBot.ts",
     "snapshot": "ts-node src/scripts/snapshotBot.ts",
     "history": "ts-node src/scripts/readHistory.ts",
     "query": "ts-node src/scripts/queryFeed.ts",
