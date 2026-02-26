@@ -3,7 +3,7 @@ import { fetchChainlinkPrice, getChainlinkFeeds } from '../lib/chainlinkReader'
 import { fetchCoinGeckoPrice, getCoinGeckoFeeds } from '../lib/coingeckoReader'
 import { updateFeed } from '../lib/contract'
 
-const UPDATE_INTERVAL_MS = 5000 // 5 seconds
+const UPDATE_INTERVAL_MS = 600000 // 10 minutes
 
 async function processAllFeeds() {
   // Get all feeds to process
@@ -60,12 +60,25 @@ async function main() {
   console.log(`Update interval: ${UPDATE_INTERVAL_MS / 1000} seconds`)
   console.log('Press Ctrl+C to stop\n')
 
-  // Run immediately, then every 5 seconds
+  // Run immediately, then every 10 minutes
   while (true) {
     try {
       await processAllFeeds()
-      console.log(`\nWaiting ${UPDATE_INTERVAL_MS / 1000} seconds until next update...`)
-      await new Promise(resolve => setTimeout(resolve, UPDATE_INTERVAL_MS))
+      const waitMinutes = UPDATE_INTERVAL_MS / 60000
+      console.log(`\n✓ All feeds updated. Next update in ${waitMinutes} minutes...`)
+      
+      // Wait with periodic heartbeat to show bot is alive
+      const heartbeatInterval = 60000 // Log every 1 minute
+      let elapsed = 0
+      
+      while (elapsed < UPDATE_INTERVAL_MS) {
+        await new Promise(resolve => setTimeout(resolve, heartbeatInterval))
+        elapsed += heartbeatInterval
+        const remaining = Math.ceil((UPDATE_INTERVAL_MS - elapsed) / 60000)
+        if (remaining > 0) {
+          console.log(`  Bot alive... ${remaining} minute(s) until next update`)
+        }
+      }
     } catch (error: any) {
       console.error(`Error in update cycle: ${error.message}`)
       // Wait before retrying
