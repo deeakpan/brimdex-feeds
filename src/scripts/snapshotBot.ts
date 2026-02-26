@@ -12,7 +12,7 @@ async function processAllFeeds() {
   
   console.log(`\n[${new Date().toISOString()}] Processing ${chainlinkFeeds.length} Chainlink feeds and ${coingeckoFeeds.length} CoinGecko feeds...`)
 
-  // Process Chainlink feeds sequentially
+  // Process Chainlink feeds sequentially with delays to avoid rate limits
   for (const feedConfig of chainlinkFeeds) {
     try {
       // Fetch data from Chainlink
@@ -27,13 +27,21 @@ async function processAllFeeds() {
       )
 
       console.log(`✓ ${feedConfig.pair} - Price: ${priceData.price}, Tx: ${txHash.slice(0, 10)}...`)
+      
+      // Delay between Chainlink feeds to avoid rate limits (10 seconds)
+      await new Promise(resolve => setTimeout(resolve, 10000))
     } catch (error: any) {
       console.error(`✗ ${feedConfig.pair}: ${error.message}`)
+      // Wait longer on rate limit errors
+      if (error.message?.includes('rate limit') || error.message?.includes('429')) {
+        console.log(`  Rate limited, waiting 15 seconds before next feed...`)
+        await new Promise(resolve => setTimeout(resolve, 15000))
+      }
       // Continue with next feed even if one fails
     }
   }
 
-  // Process CoinGecko feeds sequentially
+  // Process CoinGecko feeds sequentially with delays
   for (const feedConfig of coingeckoFeeds) {
     try {
       // Fetch data from CoinGecko
@@ -48,8 +56,16 @@ async function processAllFeeds() {
       )
 
       console.log(`✓ ${feedConfig.pair} - Price: ${priceData.price}, Tx: ${txHash.slice(0, 10)}...`)
+      
+      // Delay after CoinGecko feed (10 seconds)
+      await new Promise(resolve => setTimeout(resolve, 10000))
     } catch (error: any) {
       console.error(`✗ ${feedConfig.pair}: ${error.message}`)
+      // Wait longer on rate limit errors
+      if (error.message?.includes('rate limit') || error.message?.includes('429')) {
+        console.log(`  Rate limited, waiting 20 seconds before retry...`)
+        await new Promise(resolve => setTimeout(resolve, 20000))
+      }
       // Continue with next feed even if one fails
     }
   }
