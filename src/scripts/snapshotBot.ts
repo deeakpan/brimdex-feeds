@@ -3,7 +3,7 @@ import { fetchChainlinkPrice, getChainlinkFeeds } from '../lib/chainlinkReader'
 import { fetchCoinGeckoPrice, getCoinGeckoFeeds } from '../lib/coingeckoReader'
 import { updateFeed } from '../lib/contract'
 
-const UPDATE_INTERVAL_MS = 600000 // 10 minutes
+const UPDATE_INTERVAL_MS = 300000 // 5 minutes
 
 async function processAllFeeds() {
   // Get all feeds to process
@@ -76,7 +76,7 @@ async function main() {
   console.log(`Update interval: ${UPDATE_INTERVAL_MS / 1000} seconds`)
   console.log('Press Ctrl+C to stop\n')
 
-  // Run immediately, then every 10 minutes
+  // Run immediately, then every 5 minutes
   while (true) {
     try {
       await processAllFeeds()
